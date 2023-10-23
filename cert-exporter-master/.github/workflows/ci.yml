@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go ^1.15
+        uses: actions/setup-go@v2
+        with:
+          go-version: ^1.18
+
+      - name: Clean Helm Tags
+        run: git tag -d $(git tag -l "cert-exporter*")
+
+      - name: Build
+        run: make build
+
+      - name: Test certificate and kubeconfig
+        run: |
+          cd test/files
+          ./test.sh
+
+      - name: Test cert-manager
+        run: |
+          cd test/cert-manager
+          ./test.sh
+
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euxo pipefail
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            make release
+          else
+            make release-snapshot
+          fi
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: release-artifacts
+          path: |
+            dist/
+            !dist/*/*

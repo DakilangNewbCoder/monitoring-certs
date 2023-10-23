@@ -1,0 +1,12 @@
+[
+    {
+      "targets": [ 
+        "192.168.59.101:9117"
+      ],
+      "labels": {
+        "os": "linux",
+        "type": "certs",
+        "runtime": "docker"
+      }
+    }
+]

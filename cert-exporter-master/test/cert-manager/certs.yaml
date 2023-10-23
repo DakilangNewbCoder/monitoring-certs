@@ -1,0 +1,88 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cert-manager-test
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: selfsigning-issuer
+  namespace: cert-manager-test
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: example-crt
+  namespace: cert-manager-test
+spec:
+  commonName: example.com
+  secretName: selfsigned-cert-tls
+  duration: 2400h
+  issuerRef:
+    name: selfsigning-issuer
+---
+apiVersion: v1
+data:
+  test.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCekNDQWUrZ0F3SUJBZ0lVTDVRNCs0YkdFMkpJSDI1dk9hTEtsNmFmWmJRd0RRWUpLb1pJaHZjTkFRRUwKQlFBd0V6RVJNQThHQTFVRUF3d0lhRzF6TFhSbGMzUXdIaGNOTWpBd016RXpNVEV4TlRVeldoY05NakV3TXpFegpNVEV4TlRVeldqQVRNUkV3RHdZRFZRUUREQWhvYlhNdGRHVnpkRENDQVNJd0RRWUpLb1pJaHZjTkFRRUJCUUFECmdnRVBBRENDQVFvQ2dnRUJBTVVNZDg5di9EbjNBTUVWcHBoL2FETElYdE80eEdZYWtocit2RDVid3RFTmkzOHgKeG5nWWh3WmJwYUkrTkhHZlJxVnhnQTIvUXJQSG9LUHE2eHhMK1VUa3prYVB0aCtZUVJqM3lqYTBud3pTZzZJYgo0ZTIvK3lya2J0M29RK2k5SjlkZ2lLbFdvVk56clV2U3hoRkFBMnlvclEremhmb1JEdHNsR2xScWQ3Qng2K3hvCm1pVUpUZVNYUVh1ZmVZVmxSNExKNThlZjFHaUJ5U2p4MVVBekpYbEE2ek5MVU5BeHZSbEd1WEs3QUc1NmVHRGsKNkxKbURTMHpWNzFQb0EzZmIvUXFTZ1F2U013amlzdzhXWUNoQUxQei9OWXErQTJwM051aHhyTVdETnhNdnFTRQpKdGxySmt2emRmb3VpY2o5cXoyZTNwTmV1bnZtaDY5UU1WdGo1NzBDQXdFQUFhTlRNRkV3SFFZRFZSME9CQllFCkZKanpZb1l0TU9qejFkVVlSSFhJaitCOWF2U3ZNQjhHQTFVZEl3UVlNQmFBRkpqellvWXRNT2p6MWRVWVJIWEkKaitCOWF2U3ZNQThHQTFVZEV3RUIvd1FGTUFNQkFmOHdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBSlR2RDdFRgpVd3dLS2VFYVlFelJLSDhWanlSd08xRTFkN3EwVXhDOU9ubC9mTHU0L0RYU20vTCtvbSt5QWsrV2pzVWtmNkdzClZ1dE5sbUNEME5xZWU1RnNWYy82RnlhQUZSUG45UTJlNTNwUERQTVJwSWgwdHRkcXdQdVk3UUhqMUFFclFrRisKMC9ZOFdoTllrQStyVFR5cG10YTB4dXUrc0JXMURrRDliei9HUWpqZm52U0wyVTJIM2Z1L0tycERQM3RKb2NtNApQczBYZ29vK2k2Q0JGY3Q4dEtQYWsrZTVNSGtyTXZVNHZNV1Q1aTlKNzVpWUR3R1BkZWlvSlE3NFlSSXo0SWo1CmdVb3VqemVIN01qK3FpNTl0VHU3bnVRZHlVeEhwR3hlUlJrRmQvZFVqbXVtZDVMbTJTb2JDSDZoeXVBbHVrRC8KWDJWTmI0MXp5Ri8wazA0PQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+kind: Secret
+metadata:
+  name: test
+  annotations:
+    test: test
+type: Opaque
+---
+apiVersion: v1
+data:
+  test.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDBzCCAe+gAwIBAgIUL5Q4+4bGE2JIH25vOaLKl6afZbQwDQYJKoZIhvcNAQEL
+    BQAwEzERMA8GA1UEAwwIaG1zLXRlc3QwHhcNMjAwMzEzMTExNTUzWhcNMjEwMzEz
+    MTExNTUzWjATMREwDwYDVQQDDAhobXMtdGVzdDCCASIwDQYJKoZIhvcNAQEBBQAD
+    ggEPADCCAQoCggEBAMUMd89v/Dn3AMEVpph/aDLIXtO4xGYakhr+vD5bwtENi38x
+    xngYhwZbpaI+NHGfRqVxgA2/QrPHoKPq6xxL+UTkzkaPth+YQRj3yja0nwzSg6Ib
+    4e2/+yrkbt3oQ+i9J9dgiKlWoVNzrUvSxhFAA2yorQ+zhfoRDtslGlRqd7Bx6+xo
+    miUJTeSXQXufeYVlR4LJ58ef1GiBySjx1UAzJXlA6zNLUNAxvRlGuXK7AG56eGDk
+    6LJmDS0zV71PoA3fb/QqSgQvSMwjisw8WYChALPz/NYq+A2p3NuhxrMWDNxMvqSE
+    JtlrJkvzdfouicj9qz2e3pNeunvmh69QMVtj570CAwEAAaNTMFEwHQYDVR0OBBYE
+    FJjzYoYtMOjz1dUYRHXIj+B9avSvMB8GA1UdIwQYMBaAFJjzYoYtMOjz1dUYRHXI
+    j+B9avSvMA8GA1UdEwEB/wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBAJTvD7EF
+    UwwKKeEaYEzRKH8VjyRwO1E1d7q0UxC9Onl/fLu4/DXSm/L+om+yAk+WjsUkf6Gs
+    VutNlmCD0Nqee5FsVc/6FyaAFRPn9Q2e53pPDPMRpIh0ttdqwPuY7QHj1AErQkF+
+    0/Y8WhNYkA+rTTypmta0xuu+sBW1DkD9bz/GQjjfnvSL2U2H3fu/KrpDP3tJocm4
+    Ps0Xgoo+i6CBFct8tKPak+e5MHkrMvU4vMWT5i9J75iYDwGPdeioJQ74YRIz4Ij5
+    gUoujzeH7Mj+qi59tTu7nuQdyUxHpGxeRRkFd/dUjmumd5Lm2SobCH6hyuAlukD/
+    X2VNb41zyF/0k04=
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  name: test
+  annotations:
+    test: test
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  name: test-webhook-cfg
+  annotations:
+    test: test
+webhooks:
+  - admissionReviewVersions:
+      - v1
+      - v1beta
+    name: mutating.test-webhook.com
+    clientConfig:
+      service:
+        name: test-webhook-svc
+        namespace: default
+        path: "/mutate"
+      caBundle: "LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJ3RENDQVVlZ0F3SUJBZ0lRSnpWYTZ6TC92a2ZTMU12NXZhelRwakFLQmdncWhrak9QUVFEQXpBaU1TQXcKSGdZRFZRUURFeGRqWlhKMExXMWhibUZuWlhJdGQyVmlhRzl2YXkxallUQWVGdzB5TWpBNE1qWXdNekl6TURGYQpGdzB5TXpBNE1qWXdNekl6TURGYU1DSXhJREFlQmdOVkJBTVRGMk5sY25RdGJXRnVZV2RsY2kxM1pXSm9iMjlyCkxXTmhNSFl3RUFZSEtvWkl6ajBDQVFZRks0RUVBQ0lEWWdBRXpwVjg3cUd2bXZMZ2FOSnhFUGVUbW1hMFgrcnEKNkdwNEZJNDZFeUtJQjNOb3dMQ1BTMUttcXo2VGtCbFFSbnovczZCdWp0dW9zZjd6L2lpSTJoSnFRVTRldnNwbQpUaHRPVzA4eCs1Y3lxbmEzdzJ1TFp0ZjZiMnRNV0Vpd21zeUpvMEl3UURBT0JnTlZIUThCQWY4RUJBTUNBcVF3CkR3WURWUjBUQVFIL0JBVXdBd0VCL3pBZEJnTlZIUTRFRmdRVVBSOGRkS3h2NlJWL3ZDaU1rZmJJdkRscGJrOHcKQ2dZSUtvWkl6ajBFQXdNRFp3QXdaQUl3QlVsTmtzR2tVWHRFb0tzTG1CdHNDN2NQcit4cHFIVjRnSGdpVVc0awpPdmNOazdLSU0vK0pOQzlDL3ZOZXRCUFBBakFGZEhDM1Z0eU5kNXVHdEY3dXVTcGxHbVJRYmIxWVdFTU5QbHkzCjhIRTliT09nZ09wYWNydDY5NnNwWVpsaGlDOD0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo="
+    failurePolicy: Ignore
+    sideEffects: None
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: ["core", ""]
+        apiVersions: ["*"]
+        resources: ["persistentvolumeclaims"]
+
